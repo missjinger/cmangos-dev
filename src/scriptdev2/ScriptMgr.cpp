@@ -23,7 +23,7 @@ void FillSpellSummary();
 
 void LoadDatabase()
 {
-    std::string strSD2DBinfo = SD2Config.GetStringDefault("ScriptDev2DatabaseInfo", "");
+    std::string strSD2DBinfo = SD2Config.GetStringDefault("WorldDatabaseInfo", "");
 
     if (strSD2DBinfo.empty())
     {
@@ -98,26 +98,6 @@ void InitScriptLibrary()
     outstring_log("   MM M   M MMMM");
     outstring_log("MM  M M  M ");
     outstring_log(" MMM  MMM  http://www.scriptdev2.com");
-    outstring_log("");
-
-    // Get configuration file
-    bool configFailure = false;
-    if (!SD2Config.SetSource(_SCRIPTDEV2_CONFIG))
-        configFailure = true;
-    else
-        outstring_log("SD2: Using configuration file %s", _SCRIPTDEV2_CONFIG);
-
-    // Set SD2 Error Log File
-    std::string sd2LogFile = SD2Config.GetStringDefault("SD2ErrorLogFile", "SD2Errors.log");
-    setScriptLibraryErrorFile(sd2LogFile.c_str(), "SD2");
-
-    if (configFailure)
-        script_error_log("Unable to open configuration file. Database will be unaccessible. Configuration values will use default.");
-
-    // Check config file version
-    if (SD2Config.GetIntDefault("ConfVersion", 0) != SD2_CONF_VERSION)
-        script_error_log("Configuration file version doesn't match expected version. Some config variables may be wrong or missing.");
-
     outstring_log("");
 
     // Load database (must be called after SD2Config.SetSource).
