@@ -61,35 +61,35 @@ char remotes[NUM_REMOTES][MAX_REMOTE] =
 
 char remote_branch[MAX_REMOTE] = "master";
 char rev_sql_file[MAX_PATH] = "src/shared/revision_sql.h";
-char sql_update_dir[MAX_PATH] = "sql/updates";
+char sql_update_dir[MAX_PATH] = "sql/updates/core";
 char new_index_file[MAX_PATH] = ".git/git_id_index";
 
 char databases[NUM_DATABASES][MAX_DB] =
 {
+    "realmd",
     "characters",
     "mangos",
-    "realmd"
 };
 
 char db_version_table[NUM_DATABASES][MAX_DB] =
 {
+    "realmd_db_version",
     "character_db_version",
     "db_version",
-    "realmd_db_version",
 };
 
 char db_sql_file[NUM_DATABASES][MAX_PATH] =
 {
-    "sql/characters.sql",
-    "sql/mangos.sql",
-    "sql/realmd.sql"
+    "sql/base/realmd.sql",
+    "sql/base/characters.sql",
+    "sql/base/mangos.sql",
 };
 
 char db_sql_rev_field[NUM_DATABASES][MAX_PATH] =
 {
+    "REVISION_DB_REALMD",
     "REVISION_DB_CHARACTERS",
     "REVISION_DB_MANGOS",
-    "REVISION_DB_REALMD"
 };
 
 #define REV_PREFIX ""
@@ -418,13 +418,16 @@ bool find_sql_updates()
 
     pclose(cmd_pipe);
 
-    // Add last milestone's file information
-    last_sql_rev[0] = 11785;
-    last_sql_nr[0] = 2;
-    sscanf("11785_02_characters_instance", "%s", last_sql_update[0]);
-    last_sql_rev[2] = 10008;
+    // Add last milestone's file information (needs to be updated whenever files are moved out of sql/updates/core folder)
+    last_sql_rev[0] = 10008;
+    last_sql_nr[0] = 1;
+    sscanf("10008_01_realmd_realmd_db_version", "%s", last_sql_update[0]);
+    last_sql_rev[1] = 12931;
+    last_sql_nr[1] = 3;
+    sscanf("12931_03_characters_guild_member", "%s", last_sql_update[1]);
+    last_sql_rev[2] = 12936;
     last_sql_nr[2] = 1;
-    sscanf("10008_01_realmd_realmd_db_version", "%s", last_sql_update[2]);
+    sscanf("12936_01_mangos_mangos_string", "%s", last_sql_update[2]);
 
     // remove updates from the last commit also found on origin
     snprintf(cmd, MAX_CMD, "git show %s:%s", origin_hash, sql_update_dir);
